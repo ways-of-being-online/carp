@@ -1,0 +1,115 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CARP</title>
+    <meta name="title" content="CARP">
+    <meta name="description" content="">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="meta.png">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="">
+    <meta property="twitter:description" content="">
+    <meta property="twitter:image" content="">
+
+    <link rel="stylesheet" type="text/css" href="visual.css">
+  </head>
+
+  <body>
+    <div class="picnic-basket">
+      <nav>
+        <div class="logo">logo</div>
+        <div class="items">
+          <div>Archive</div>
+          <div>Community Guidelines</div>
+          <div>Resources</div>
+          <div>About</div>
+          <div>Get in Touch</div>
+        </div>
+      </nav>
+      <div id="home-material"></div>
+      <div id="spotlight-list"></div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <script>
+       const spotlights = document.getElementById("spotlight-list");
+       const homeMaterial = document.getElementById("home-material");
+
+       const axiosArena = axios.create({
+         baseURL: "https://api.are.na/v2/",
+       });
+
+       let loading = document.createElement("div");
+       loading.className = "loading";
+       loading.innerHTML = 'loading...';
+       spotlights.appendChild(loading);
+
+
+       axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
+
+       axiosArena.get("channels/what-is-carp-nnnvpbzwtig").then(response => {
+         if (response.data && response.data.contents.length > 0) {
+           createHomepageMaterials(response.data.contents[0]);
+         }
+       });
+
+       axiosArena.get("channels/carp-spotlights").then(response => {
+         if (response.data && response.data.contents.length > 0) {
+           spotlights.removeChild(loading);
+           createSpotlightList(response.data.contents);
+         }
+       });
+
+       function createHomepageMaterials(dat) {
+         let block = document.createElement("div");
+         block.className = "home-material";
+         console.log(dat);
+         const content = document.createElement("div");
+         content.className = "home-material-wrapper";
+         content.innerHTML = dat.content_html;
+         block.appendChild(content);
+         homeMaterial.appendChild(block);
+       }
+
+       function createSpotlightList(spotlightData) {
+         for (let i=0; i<spotlightData.length; i++) {
+           axiosArena.get(`channels/${spotlightData[i].slug}`).then(response => {
+             if (response.data && response.data.contents.length > 0) {
+               createSpotlightItem(response.data.contents[0]);
+             }
+           });
+         }
+       }
+
+       function createSpotlightItem(item) {
+         let block = document.createElement("div");
+         block.className = "block";
+         let content = document.createElement("div");
+         content.className = "content";
+         const title = document.createElement("div");
+         title.className = "title";
+         title.innerHTML = item.title;
+         block.appendChild(title);
+         if (item.image) {
+           const image = document.createElement("img");
+           image.className = "image";
+           image.src = item.image.original.url;
+           image.alt = item.title;
+           block.appendChild(image);
+         }
+        content.appendChild(block);
+        spotlights.appendChild(content);
+       }
+
+     </script>
+  </body>
+
+
+</html>
