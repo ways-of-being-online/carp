@@ -2,8 +2,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CARP</title>
-    <meta name="title" content="CARP">
+    <title>Action Graphics Network</title>
+    <meta name="title" content="Action Graphics Network">
     <meta name="description" content="">
 
     <meta property="og:type" content="website">
@@ -24,13 +24,13 @@
   <body>
     <div class="picnic-basket">
       <nav>
-        <div class="logo">logo</div>
+        <div class="logo"><a href="/">logo</a></div>
         <div class="items">
-          <div>Archive</div>
-          <div>Community Guidelines</div>
-          <div>Resources</div>
-          <div>About</div>
-          <div>Get in Touch</div>
+          <div><a href="/archive.html">Archive</a></div>
+          <div><a href="/community.html">Community Guidelines</a></div>
+          <div><a href="/resources.html">Resources</a></div>
+          <div><a href="/about.html">About</a></div>
+          <div><a href="/touch.html">Get in Touch</a></div>
         </div>
       </nav>
       <div id="home-material"></div>
@@ -54,13 +54,13 @@
 
        axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
 
-       axiosArena.get("channels/what-is-carp-nnnvpbzwtig").then(response => {
+       axiosArena.get("channels/agn-homepage").then(response => {
          if (response.data && response.data.contents.length > 0) {
            createHomepageMaterials(response.data.contents[0]);
          }
        });
 
-       axiosArena.get("channels/carp-spotlights").then(response => {
+       axiosArena.get("channels/agn-spotlights").then(response => {
          if (response.data && response.data.contents.length > 0) {
            spotlights.removeChild(loading);
            createSpotlightList(response.data.contents);
