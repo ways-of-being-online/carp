@@ -33,8 +33,80 @@
           <div><a href="/touch.html">Get in Touch</a></div>
         </div>
       </nav>
+      <div class="archive-wrapper">
+        <div class="filters">
 
+          <div id="filter-list">
+            <h2>Archive</h2>
+            <span>Filters:</span><button class="filt active">all</button>
+          </div>
+
+          <div id="project-list">
+
+          </div>
+        </div>
+        <div class="display">
+
+        </div>
+      </div>
     </div>
 
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const filterList = document.getElementById("filter-list");
+      const projectList = document.getElementById("project-list");
+
+      const axiosArena = axios.create({
+        baseURL: "https://api.are.na/v2/",
+      });
+
+      let loading = document.createElement("div");
+      loading.className = "loading";
+      loading.innerHTML = 'loading...';
+      projectList.appendChild(loading);
+
+
+      axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
+
+      axiosArena.get("channels/all-filters").then(response => {
+        if (response.data && response.data.contents.length > 0) {
+          createFilterList(response.data.contents);
+        }
+      });
+
+      axiosArena.get("channels/agn-archive").then(response => {
+        if (response.data && response.data.contents.length > 0) {
+          createProjectList(response.data.contents);
+          projectList.removeChild(loading);
+        }
+      });
+
+      function createFilterList(data) {
+        data.map((fil) => {
+          let filterName = document.createElement("button");
+          let name = fil.slug;
+          name = name.replace(/\b(\w*agn\w*)\b\-/, "");
+          filterName.classList.add("filt");
+          filterName.innerHTML = name;
+          filterList.appendChild(filterName);
+        })
+      }
+
+      function createProjectList(data) {
+        data.map((proj) => {
+          let projectName = document.createElement("p");
+          let name = proj.title;
+          console.log(proj);
+          name = name.replace(/☁/, "");
+
+
+          projectName.classList.add("project-name");
+          projectName.innerHTML = name;
+          projectList.appendChild(projectName);
+        })
+      }
+    </script>
   </body>
 </html>
