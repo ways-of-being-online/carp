@@ -24,7 +24,7 @@
   <body>
     <div class="picnic-basket">
       <nav>
-        <div class="logo"><a href="/">logo</a></div>
+        <div class="logo"><a href="/"><img src="agn_logo.svg" alt="Action Graphics Network logo" /></a></div>
         <div class="items">
           <div><a href="/archive.html">Archive</a></div>
           <div><a href="/community.html">Community Guidelines</a></div>
@@ -33,8 +33,42 @@
           <div><a href="/touch.html">Get in Touch</a></div>
         </div>
       </nav>
-
+      <div id="about-material">
+      </dov>
     </div>
 
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <script>
+       const aboutMaterial = document.getElementById("about-material");
+
+       const axiosArena = axios.create({
+         baseURL: "https://api.are.na/v2/",
+       });
+
+       let loading = document.createElement("div");
+       loading.className = "loading";
+       loading.innerHTML = 'loading...';
+
+
+       axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
+
+       axiosArena.get("channels/agn-touch").then(response => {
+         if (response.data && response.data.contents.length > 0) {
+           createAboutPageMaterials(response.data.contents[0]);
+         }
+       });
+
+       function createAboutPageMaterials(dat) {
+         let block = document.createElement("div");
+         block.className = "about-material";
+         const content = document.createElement("div");
+         content.className = "about-material-wrapper";
+         content.innerHTML = dat.content_html;
+         block.appendChild(content);
+         console.log(content);
+         aboutMaterial.appendChild(block);
+       }
+     </script>
   </body>
 </html>

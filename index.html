@@ -24,7 +24,7 @@
   <body>
     <div class="picnic-basket">
       <nav>
-        <div class="logo"><a href="/">logo</a></div>
+        <div class="logo"><a href="/"><img src="agn_logo.svg" alt="Action Graphics Network logo" /></a></div>
         <div class="items">
           <div><a href="/archive.html">Archive</a></div>
           <div><a href="/community.html">Community Guidelines</a></div>
@@ -81,20 +81,22 @@
          for (let i=0; i<spotlightData.length; i++) {
            axiosArena.get(`channels/${spotlightData[i].slug}`).then(response => {
              if (response.data && response.data.contents.length > 0) {
-               createSpotlightItem(response.data.contents[0]);
+               createSpotlightItem(response.data.contents[0], spotlightData[i].title);
              }
            });
          }
        }
 
-       function createSpotlightItem(item) {
+       function createSpotlightItem(item, projectName) {
          let block = document.createElement("div");
          block.className = "block";
          let content = document.createElement("div");
          content.className = "content";
          const title = document.createElement("div");
          title.className = "title";
-         title.innerHTML = item.title;
+         let name = projectName;
+         name = name.replace(/☁/, "");
+         title.innerHTML = name;
          block.appendChild(title);
          if (item.image) {
            const image = document.createElement("img");

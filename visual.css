@@ -88,7 +88,11 @@ nav .logo {
   justify-content: center;
   align-items: center;
   width: 30%;
-  padding: 40px;
+}
+nav .logo img {
+  height: 60px;
+  margin-bottom: 0;
+
 }
 nav .items {
   display: flex;
@@ -109,8 +113,9 @@ nav a {
   width: 100%;
 }
 
-#home-material {
-  font-family: 'Redaction-Bold';
+#home-material,
+#about-material {
+  font-family: 'Redaction-Regular';
   padding: 60px 40px 20px 40px;
 }
 
@@ -138,14 +143,16 @@ nav a {
 .block .title {
   height: 100%;
   width: 100%;
-  top: 45%;
+  top: 0;
+  display: flex;
+  align-items: center;
   margin: 0 auto;
   text-align: center;
   object-fit: cover;
   position: absolute;
-  font-size: 1.25em;
+  font-size: 2.25em;
+  padding: 10px;
   font-family: 'Redaction-Regular';
-
 }
 
 .block:hover .image {
@@ -155,14 +162,22 @@ nav a {
   opacity: 0;
 }
 .content {
-  border: 10px solid #000;
+  border: 8px solid #000;
   position: relative;
   width: 17%;
   background: #E0C08D;
-  border-radius: 30px;
-  height: 200px;
+  border-radius: 10px;
+  min-height: 250px;
   overflow: hidden;
   position: relative;
+}
+.content:nth-child(even) {
+  transform: rotate(-2deg);
+  border-color: #FF927C;
+}
+.content:nth-child(odd) {
+  transform: rotate(2deg);
+  border-color: #7C9BFF;
 }
 
 

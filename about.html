@@ -24,7 +24,7 @@
   <body>
     <div class="picnic-basket">
       <nav>
-        <div class="logo"><a href="/">logo</a></div>
+        <div class="logo"><a href="/"><img src="agn_logo.svg" alt="Action Graphics Network logo" /></a></div>
         <div class="items">
           <div><a href="/archive.html">Archive</a></div>
           <div><a href="/community.html">Community Guidelines</a></div>
@@ -49,7 +49,6 @@
        let loading = document.createElement("div");
        loading.className = "loading";
        loading.innerHTML = 'loading...';
-       spotlights.appendChild(loading);
 
 
        axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
@@ -67,6 +66,7 @@
          content.className = "about-material-wrapper";
          content.innerHTML = dat.content_html;
          block.appendChild(content);
+         console.log(content);
          aboutMaterial.appendChild(block);
        }
      </script>
