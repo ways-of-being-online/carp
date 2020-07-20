@@ -45,7 +45,7 @@
 
           </div>
         </div>
-        <div class="display">
+        <div id="display" class="display">
 
         </div>
       </div>
@@ -57,6 +57,9 @@
     <script>
       const filterList = document.getElementById("filter-list");
       const projectList = document.getElementById("project-list");
+      const display = document.getElementById("display");
+
+      const displayProjectRow = document.createElement("div");
 
       const axiosArena = axios.create({
         baseURL: "https://api.are.na/v2/",
@@ -89,23 +92,69 @@
           let name = fil.slug;
           name = name.replace(/\b(\w*agn\w*)\b\-/, "");
           filterName.classList.add("filt");
+          filterName.addEventListener("click", displayProjects);
           filterName.innerHTML = name;
+
           filterList.appendChild(filterName);
         })
       }
 
       function createProjectList(data) {
+        if (data) {
+          data.map((proj) => {
+            let projectName = document.createElement("p");
+            let name = proj.title;
+            let description = proj.metadata.description;
+            name = name.replace(/☁/, "");
+            projectName.classList.add("project-name");
+            projectName.innerHTML = name;
+            projectList.appendChild(projectName);
+
+            axiosArena.get(`channels/${proj.slug}`).then(response => {
+              if (response.data && response.data.contents.length > 0) {
+                getProjectByRow(response.data.contents, name, description);
+              }
+            });
+          })
+        }
+      }
+
+      function getProjectByRow(data, name, desc) {
+        let projectName = document.createElement("h2");
+        let projectDesc = document.createElement("h3");
+        let blockWrapper = document.createElement("div");
+        blockWrapper.classList.add("block-wrapper");
+
+        projectName.innerHTML = name;
+        projectDesc.innerHTML = desc;
+        displayProjectRow.appendChild(projectName);
+        displayProjectRow.appendChild(projectDesc);
+
+
         data.map((proj) => {
-          let projectName = document.createElement("p");
-          let name = proj.title;
-          console.log(proj);
-          name = name.replace(/☁/, "");
+          if (proj.title) {
+            let projectBlock = document.createElement("div");
+            projectBlock.className = "project-block";
+            projectBlock.innerHTML = proj.title;
+            if (proj.image) {
+              let image = document.createElement("img");
+              image.className = "image";
+              image.src = proj.image.original.url;
+              image.alt = proj.title;
+              projectBlock.appendChild(image);
+            }
+            blockWrapper.appendChild(projectBlock)
+          }
 
-
-          projectName.classList.add("project-name");
-          projectName.innerHTML = name;
-          projectList.appendChild(projectName);
         })
+
+        displayProjectRow.appendChild(blockWrapper)
+        display.appendChild(displayProjectRow);
+      }
+
+
+      function displayProjects() {
+        // console.log(this.innerHTML);
       }
     </script>
   </body>

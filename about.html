@@ -33,8 +33,42 @@
           <div><a href="/touch.html">Get in Touch</a></div>
         </div>
       </nav>
-
+      <div id="about-material">
+      </dov>
     </div>
 
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <script>
+       const aboutMaterial = document.getElementById("about-material");
+
+       const axiosArena = axios.create({
+         baseURL: "https://api.are.na/v2/",
+       });
+
+       let loading = document.createElement("div");
+       loading.className = "loading";
+       loading.innerHTML = 'loading...';
+       spotlights.appendChild(loading);
+
+
+       axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
+
+       axiosArena.get("channels/agn-about").then(response => {
+         if (response.data && response.data.contents.length > 0) {
+           createAboutPageMaterials(response.data.contents[0]);
+         }
+       });
+
+       function createAboutPageMaterials(dat) {
+         let block = document.createElement("div");
+         block.className = "about-material";
+         const content = document.createElement("div");
+         content.className = "about-material-wrapper";
+         content.innerHTML = dat.content_html;
+         block.appendChild(content);
+         aboutMaterial.appendChild(block);
+       }
+     </script>
   </body>
 </html>
