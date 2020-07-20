@@ -38,7 +38,7 @@
 
           <div id="filter-list">
             <h2>Archive</h2>
-            <span>Filters:</span><button class="filt active">all</button>
+            <span>Filters:</span>
           </div>
 
           <div id="project-list">
@@ -87,12 +87,22 @@
       });
 
       function createFilterList(data) {
+        let allFilterButton = document.createElement("button");
+        allFilterButton.innerHTML = "All";
+        allFilterButton.id = "all-filter-button";
+        allFilterButton.classList.add("filt");
+        allFilterButton.classList.add("active");
+        filterList.appendChild(allFilterButton);
+        allFilterButton.addEventListener("click", filterProjectsForDisplay);
+
         data.map((fil) => {
           let filterName = document.createElement("button");
-          let name = fil.slug;
-          name = name.replace(/\b(\w*agn\w*)\b\-/, "");
+          let name = fil.title;
+          name = name.replace(/\b(\w*AGN\w*)\b/, "");
+          name = name.replace(/♺/, "");
           filterName.classList.add("filt");
-          filterName.addEventListener("click", displayProjects);
+          filterName.id = fil.slug;
+          filterName.addEventListener("click", filterProjectsForDisplay.bind(fil));
           filterName.innerHTML = name;
 
           filterList.appendChild(filterName);
@@ -136,6 +146,8 @@
             let projectBlock = document.createElement("div");
             projectBlock.className = "project-block";
             projectBlock.innerHTML = proj.title;
+            projectBlock.id = slugify(proj.title);
+
             if (proj.image) {
               let image = document.createElement("img");
               image.className = "image";
@@ -153,8 +165,73 @@
       }
 
 
-      function displayProjects() {
-        // console.log(this.innerHTML);
+      function filterProjectsForDisplay() {
+        console.log(this);
+        const allElements = document.getElementsByClassName("project-block");
+        if (this.innerHTML === "All") {
+          if (this.classList.contains('active')) {
+            this.classList.remove('active');
+          } else {
+            this.classList.add('active');
+          }
+          for (var i = 0; i < allElements.length; i++) {
+            allElements[i].style.display = "block";
+          }
+        } else {
+          const button = document.getElementById(this.slug);
+          const allFilterButton = document.getElementById("all-filter-button");
+          if (allFilterButton.classList.contains('active')) { allFilterButton.classList.remove('active') }
+          if (button.classList.contains('active')) {
+            button.classList.remove('active');
+          } else {
+            button.classList.add('active');
+          }
+
+          for (var i = 0; i < allElements.length; i++) {
+            allElements[i].style.display = "none";
+          }
+
+          axiosArena.get(`channels/${this.slug}`).then(response => {
+            if (response.data && response.data.contents.length > 0) {
+              toggleFilteredItems(response.data.contents);
+            }
+          });
+        }
+      }
+
+      function toggleFilteredItems(data) {
+        const allElements = document.getElementsByClassName("project-block");
+
+        data.map((dat) => {
+          const title = slugify(dat.title);
+
+          const element = document.getElementById(title);
+
+          for (var i = 0; i < allElements.length; i++) {
+            console.log(allElements[i].id, title);
+            if (allElements[i].id === title) {
+              allElements[i].style.display = "block";
+            }
+          }
+        })
+      }
+
+      function slugify (str) {
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+
+        // remove accents, swap ñ for n, etc
+        var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+        var to   = "aaaaeeeeiiiioooouuuunc------";
+        for (var i=0, l=from.length ; i<l ; i++) {
+            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+
+        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+            .replace(/\s+/g, '-') // collapse whitespace and replace by -
+            .replace(/-+/g, '-'); // collapse dashes
+
+        return str;
       }
     </script>
   </body>

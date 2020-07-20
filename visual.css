@@ -210,7 +210,8 @@ nav a {
   color: #E0C08D;
   border: 2px solid #E0C08D;
   height: 35px;
-  width: 85px;
+  width: 125px;
+  cursor: pointer;
 }
 
 #filter-list button.filt.active {
@@ -229,8 +230,10 @@ nav a {
 .archive-wrapper .block-wrapper {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 42px;
   width: 100%;
 }
+
 .archive-wrapper .project-block {
   display: flex;
   justify-content: flex-start;
