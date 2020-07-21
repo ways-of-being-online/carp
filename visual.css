@@ -153,6 +153,7 @@ nav a {
   font-size: 2.25em;
   padding: 10px;
   font-family: 'Redaction-Regular';
+  justify-content: center;
 }
 
 .block:hover .image {

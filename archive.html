@@ -157,7 +157,6 @@
             }
             blockWrapper.appendChild(projectBlock)
           }
-
         })
 
         displayProjectRow.appendChild(blockWrapper)
@@ -166,13 +165,17 @@
 
 
       function filterProjectsForDisplay() {
-        console.log(this);
         const allElements = document.getElementsByClassName("project-block");
+        const allButtons = document.getElementsByClassName("filt");
         if (this.innerHTML === "All") {
           if (this.classList.contains('active')) {
             this.classList.remove('active');
           } else {
+            for (var i = 0; i < allButtons.length; i++) {
+              allButtons[i].classList.remove("active");
+            }
             this.classList.add('active');
+
           }
           for (var i = 0; i < allElements.length; i++) {
             allElements[i].style.display = "block";
@@ -181,6 +184,7 @@
           const button = document.getElementById(this.slug);
           const allFilterButton = document.getElementById("all-filter-button");
           if (allFilterButton.classList.contains('active')) { allFilterButton.classList.remove('active') }
+
           if (button.classList.contains('active')) {
             button.classList.remove('active');
           } else {
@@ -208,7 +212,6 @@
           const element = document.getElementById(title);
 
           for (var i = 0; i < allElements.length; i++) {
-            console.log(allElements[i].id, title);
             if (allElements[i].id === title) {
               allElements[i].style.display = "block";
             }
