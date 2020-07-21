@@ -19,12 +19,18 @@
     <meta property="twitter:image" content="">
 
     <link rel="stylesheet" type="text/css" href="visual.css">
+    <link href="burger.css" rel="stylesheet">
   </head>
 
   <body>
     <div class="picnic-basket">
       <nav>
         <div class="logo"><a href="/"><img src="agn_logo.svg" alt="Action Graphics Network logo" /></a></div>
+        <button class="hamburger hamburger--3dx-r" type="button">
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>
         <div class="items">
           <div><a href="/archive.html">Archive</a></div>
           <div><a href="/community.html">Community Guidelines</a></div>
@@ -38,7 +44,14 @@
     </div>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
      <script>
+       const hamburger = document.querySelector(".hamburger");
+       const menu = document.querySelector(".items");
+       hamburger.addEventListener("click", function() {
+         hamburger.classList.toggle("is-active");
+         menu.classList.toggle("is-active");
+       });
        const spotlights = document.getElementById("spotlight-list");
        const homeMaterial = document.getElementById("home-material");
 
