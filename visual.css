@@ -46,13 +46,13 @@ html, body {
 *, *:before, *:after { box-sizing: inherit; }
 
 body {
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
   color: #1d1d1d;
-  background: tan;
+  background: #E0C08D;
 }
 
 h1, h2, h3, h4, h5 {
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
   margin: 0;
   font-weight: bold;
 }
@@ -72,7 +72,7 @@ h3 {
 p {
   font-size: 1.125em;
   margin-bottom: 16px;
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
   max-width: 650px;
   line-height: 150%;
 }
@@ -84,13 +84,63 @@ a {
 }
 
 a:hover {
+  background-color: #E0C08D;
+}
+
+a.archive-link:hover {
+  background-color: antiquewhite;
+}
+
+a.home-link:hover {
   background-color: tomato;
 }
+
+a.community-link:hover {
+  background-color: mediumspringgreen;
+}
+
+a.resources-link:hover {
+  background-color: lightskyblue;
+}
+
+a.about-link:hover {
+  background-color: gold;
+}
+
+a.touch-link:hover {
+  background-color: orchid;
+}
+
+.home-content{
+  background-color: tomato;
+}
+
+.community-content{
+  background-color: mediumspringgreen;
+}
+
+.about-content{
+  background-color: gold;
+}
+
+.resources-content{
+  background-color: lightskyblue;;
+}
+
+.touch-content{
+  background-color: orchid;
+}
+
+.archive-content{
+  background-color: antiquewhite;
+}
+
+
 
 
 @media only screen and (min-width: 767px) {
   h1 {
-    font-size: 3.5em;
+    font-size: 3em;
     margin-bottom: 32px;
   }
   h2 {
@@ -111,13 +161,16 @@ a:hover {
 img {
   display: block;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 64px;
+  border-radius: 4px;
+  border: 3px solid #1d1d1d;
 }
 
 nav {
   display: none;
   width: 100%;
   display: flex;
+  background-color: #E0C08D;
   justify-content: space-between;
   border-bottom: 3px solid #1d1d1d;
   height: 80px;
@@ -132,6 +185,7 @@ nav .logo {
 nav .logo img {
   height: 60px;
   margin-bottom: 0;
+  border: none;
 }
 
 nav .items {
@@ -145,7 +199,7 @@ nav .items {
   height: 100vh;
   z-index: 99;
   font-size: 2.125em;
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
 }
 
 nav .items div {
@@ -158,7 +212,7 @@ nav .items.is-active {
 }
 
 a.logo-link:hover {
-  background-color: tan;
+  background-color: #E0C08D;
 }
 
 .hamburger {
@@ -173,7 +227,8 @@ a.logo-link:hover {
     height: auto;
   }
   nav .items {background: transparent; display: flex; position: relative; top: 0;
-  height: auto; width: 70%; font-size: 1em; font-family: 'Rubik';}
+  height: auto; width: 70%; font-size: 1em; font-family: 'Rubik', 'Helvetica', sans-serif;
+}
   nav .items div {
     margin-bottom: 0px;
   }
@@ -190,7 +245,7 @@ nav a {
 
 #home-material,
 #about-material {
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
   padding: 40px;
 }
 
@@ -201,20 +256,20 @@ nav a {
   flex-wrap: wrap;
   justify-content: space-around;
   color: #1d1d1d;
-  padding: 60px 40px 220px 40px;
+  background-color: tomato;
+  padding: 20px 40px 220px 40px;
 }
 
-.content:nth-child(even) .block .image {
+.content {
   border-radius: 4px;
 }
-.content:nth-child(odd) .block .image {
-  border-radius: 4px;
-}
+
 
 .block .title {
   color: #1d1d1d;
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
   font-size: 1.5em;
+  font-weight: bold;
   margin-bottom: 24px;
 }
 
@@ -226,7 +281,7 @@ nav a {
     border: none;
   }
   #spotlight-list .block {
-    background: tan;
+    background: #E0C08D;
     height: 100%;
     width: 100%;
     position: relative;
@@ -234,18 +289,22 @@ nav a {
 
   #home-material,
   #about-material {
-    font-family: 'Rubik';
+    font-family: 'Rubik', 'Helvetica', sans-serif;
     padding: 80px 120px;
   }
 
-  /* .block .image {
+  #home-material{
+    padding-bottom: 20px;
+  }
+
+  .block .image {
     opacity: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
     position: absolute;
-  } */
-  /* .block .title {
+  }
+  .block .title {
     height: 100%;
     width: 100%;
     top: 0;
@@ -259,14 +318,14 @@ nav a {
     padding: 10px;
     color: #1d1d1d;
     justify-content: center;
-  } */
+  }
 
-  /* .block:hover .image {
+  .block:hover .image {
     opacity: 1;
   }
   .block:hover .title {
     opacity: 0;
-  } */
+  }
   .content {
     position: relative;
     width: 100%;
@@ -275,14 +334,13 @@ nav a {
     overflow: hidden;
     position: relative;
     margin-bottom: 46px;
+    border: 3px solid #1d1d1d;
   }
 }
 
 @media only screen and (min-width: 767px) {
   .content {
-    /* border: 8px solid #000; */
     position: relative;
-    /* background: tomato; */
     width: 17%;
     border-radius: 4px;
     min-height: 250px;
@@ -302,7 +360,7 @@ nav a {
   width: 100%;
   background: #1d1d1d;
   padding: 40px;
-  color: tan;
+  color: #E0C08D;
 }
 
 .archive-wrapper .filters h2 {
@@ -323,9 +381,18 @@ nav a {
 #project-list {
   display: block;
   width: 100%;
+  color: antiquewhite;
+  margin-bottom: 32px;
 }
 #project-list p {
   cursor: pointer;
+  color: antiquewhite;
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+#project-list p:hover {
+  color: tomato;
 }
 
 @media only screen and (min-width: 767px) {
@@ -344,18 +411,17 @@ nav a {
   padding: 10px 16px;
   margin: 4px;
   background: #1d1d1d;
-  color: tan;
-  border: 2px solid tan;
+  color: antiquewhite;
+  border: 2px solid antiquewhite;
   border-radius: 2px;
   height: 35px;
-  /* width: 130px; */
   cursor: pointer;
-  font-family: 'Rubik';
+  font-family: 'Rubik', 'Helvetica', sans-serif;
 }
 
 #filter-list button.filt.active {
   color: #1d1d1d;
-  background: tan;
+  background: tomato;
   border: 2px solid #1d1d1d;
 }
 .archive-wrapper #display {
