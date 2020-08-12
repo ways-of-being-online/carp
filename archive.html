@@ -136,18 +136,17 @@
       }
 
       function createProjectList(data) {
-        let allProjectData = document.createElement("p");
-        // allProjectData.innerHTML = "Show All Graphics";
-        // allProjectData.id = "all-graphics-button";
-        // allProjectData.style.marginBottom = "46px";
 
+        let seeAllGraphics = document.createElement("p");
+        seeAllGraphics.style.marginBottom = "46px";
+        seeAllGraphics.innerHTML = "See All Graphics";
         let showDataByOrgLabel = document.createElement("small");
         showDataByOrgLabel.innerHTML = "Browse by organization:";
 
-        projectList.appendChild(allProjectData);
-        projectList.appendChild(showDataByOrgLabel);
-        allProjectData.addEventListener("click", reDisplayAllDataFromAllProjects);
 
+        projectList.appendChild(seeAllGraphics);
+        projectList.appendChild(showDataByOrgLabel);
+        seeAllGraphics.addEventListener("click", reDisplayAllDataFromAllProjects);
 
         if (data) {
           data.map((proj) => {
@@ -259,22 +258,19 @@
         const button = document.getElementById(this.slug);
         let projectName = document.createElement("h2");
         let projectDesc = document.createElement("h3");
-
+        const allFilterButton = document.getElementById("all-filter-button");
+        allFilterButton.classList.contains("active") ? allFilterButton.classList.remove("active") : null;
         projectName.innerHTML = this.title;
         projectDesc.innerHTML = this.metadata.description;
         displayProjectRow.innerHTML = "";
-        console.log(this);
         displayProjectRow.appendChild(projectName);
         displayProjectRow.appendChild(projectDesc);
-
-        console.log(this);
 
         axiosArena.get(`channels/${this.slug}`).then(response => {
           if (response.data && response.data.contents.length > 0) {
             displayProject(response.data.contents);
           }
         });
-
       }
 
       function displayProject(data) {
