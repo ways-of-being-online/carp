@@ -40,20 +40,20 @@
           <div><a class="touch-link" href="/touch.html">Contact</a></div>
         </div>
       </nav>
-      <div id="about-material">
+      <div id="resources">
       </dov>
     </div>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
      <script>
-     const hamburger = document.querySelector(".hamburger");
-     const menu = document.querySelector(".items");
-     hamburger.addEventListener("click", function() {
-       hamburger.classList.toggle("is-active");
-       menu.classList.toggle("is-active");
-     });
-       const aboutMaterial = document.getElementById("about-material");
+       const hamburger = document.querySelector(".hamburger");
+       const menu = document.querySelector(".items");
+       hamburger.addEventListener("click", function() {
+         hamburger.classList.toggle("is-active");
+         menu.classList.toggle("is-active");
+       });
+       const resourcesWrapper = document.getElementById("resources");
 
        const axiosArena = axios.create({
          baseURL: "https://api.are.na/v2/",
@@ -65,22 +65,61 @@
 
 
        axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
-
-       axiosArena.get("channels/agn-resources").then(response => {
+       axiosArena.get("channels/agn-resources?per=100").then(response => {
+         console.log(response);
          if (response.data && response.data.contents.length > 0) {
-           createAboutPageMaterials(response.data.contents[0]);
+           createResources(response.data.contents);
+         } else {
+
          }
        });
 
-       function createAboutPageMaterials(dat) {
-         let block = document.createElement("div");
-         block.className = "about-material";
-         const content = document.createElement("div");
-         content.className = "about-material-wrapper";
-         content.innerHTML = dat.content_html;
-         block.appendChild(content);
-         console.log(content);
-         aboutMaterial.appendChild(block);
+       function createResources(resourcesData) {
+         for (let i=0; i<resourcesData.length; i++) {
+           //create block
+           let block = document.createElement("div");
+           block.className = "r-block";
+
+           if (resourcesData[i].source) {
+             block = document.createElement("a");
+             block.className = "r-block";
+             block.href = resourcesData[i].source.url;
+             block.target = "_blank";
+           }
+
+           if (resourcesData[i].class === "Channel") {
+             block = document.createElement("a");
+             block.className = "channel";
+             block.href = `https://are.na/${resourcesData[i].user.slug}/${resourcesData[i].slug}`;
+             block.target = "_blank";
+           }
+
+           //create image
+           if (resourcesData[i].image && resourcesData[i].image) {
+             const image = document.createElement("img");
+             image.className = "image";
+             console.log(resourcesData[i].image)
+             image.src = resourcesData[i].image.original.url;
+             block.appendChild(image);
+           }
+           //create title
+           if (resourcesData[i].title) {
+             const title = document.createElement("div");
+             title.className = "title";
+             title.innerHTML = resourcesData[i].title;
+             block.appendChild(title);
+           }
+
+           //create text
+           if (resourcesData[i].class === "Text") {
+             const text = document.createElement("div");
+             text.className = "text";
+             text.innerHTML = resourcesData[i].content;
+             block.appendChild(text);
+           }
+
+           resourcesWrapper.appendChild(block);
+         }
        }
      </script>
   </body>
