@@ -96,20 +96,29 @@ function createProjectList(data) {
 
 function showAllDataFromAllProjects(data, name, desc) {
   data.map((proj) => {
+    console.log(proj);
     if (proj.title) {
       let projectBlock = document.createElement("div");
-      projectBlock.className = "project-block";
+
       projectBlock.innerHTML = proj.title;
       projectBlock.id = slugify(proj.title);
 
-      if (proj.image) {
+      if (proj.title && proj.source) {
+        projectBlock.className = "project-block video-block";
+        let video = document.createElement("div");
+        video.className = "video";
+        video.innerHTML = proj.embed.html;
+        projectBlock.appendChild(video);
+        displayProjectRow.appendChild(projectBlock);
+      } else if (proj.title && proj.image) {
+        projectBlock.className = "project-block image-block";
         let image = document.createElement("img");
         image.className = "image";
         image.src = proj.image.original.url;
         image.alt = proj.title;
         projectBlock.appendChild(image);
+        displayProjectRow.appendChild(projectBlock);
       }
-      displayProjectRow.appendChild(projectBlock)
     }
   })
 
@@ -206,18 +215,27 @@ function displayProject(data) {
   data.map((proj) => {
     if (proj.title) {
       let projectBlock = document.createElement("div");
-      projectBlock.className = "project-block";
+
       projectBlock.innerHTML = proj.title;
       projectBlock.id = slugify(proj.title);
 
-      if (proj.image) {
+      if (proj.title && proj.source) {
+        projectBlock.className = "project-block video-block";
+        let video = document.createElement("div");
+        video.className = "video";
+        video.innerHTML = proj.embed.html;
+        projectBlock.appendChild(video);
+        displayProjectRow.appendChild(projectBlock);
+      } else if (proj.title && proj.image) {
+        projectBlock.className = "project-block image-block";
         let image = document.createElement("img");
         image.className = "image";
         image.src = proj.image.original.url;
         image.alt = proj.title;
         projectBlock.appendChild(image);
+        displayProjectRow.appendChild(projectBlock);
       }
-      displayProjectRow.appendChild(projectBlock)
+
     }
   })
 
