@@ -1,5 +1,6 @@
 const hamburger = document.querySelector(".hamburger");
 const menu = document.querySelector(".items");
+
 hamburger.addEventListener("click", function() {
   hamburger.classList.toggle("is-active");
   menu.classList.toggle("is-active");
@@ -9,44 +10,51 @@ const filterList = document.getElementById("filter-list");
 const projectList = document.getElementById("project-list");
 const display = document.getElementById("display");
 
-const displayProjectRow = document.createElement("div");
-displayProjectRow.className = "display";
+const allFilterButton = document.createElement("button");
+allFilterButton.innerHTML = "All";
+allFilterButton.id = "all-filter-button";
+allFilterButton.classList.add("filt");
+allFilterButton.classList.add("active");
+filterList.appendChild(allFilterButton);
+allFilterButton.addEventListener("click", getArchive);
 
-const axiosArena = axios.create({
-  baseURL: "https://api.are.na/v2/",
-});
 
-let loading = document.createElement("div");
-loading.className = "loading";
-loading.innerHTML = 'loading...';
-projectList.appendChild(loading);
 
+const displayContainer = document.createElement("div");
+displayContainer.className = "display";
+
+const axiosArena = axios.create({ baseURL: "https://api.are.na/v2/" });
 axiosArena.defaults.headers.Authorization = 'Bearer ---' ;
 
-axiosArena.get("channels/all-filters").then(response => {
-  if (response.data && response.data.contents.length > 0) {
-    createFilterList(response.data.contents);
+function getFilters() {
+  displayContainer.innerHTML = "";
+  axiosArena.get("channels/all-filters").then(response => {
+    if (response.data && response.data.contents.length > 0) {
+      createFilterList(response.data.contents);
+    }
+  });
+}
+
+function getArchive() {
+  const allButtons = document.getElementsByClassName("filt");
+  for (var i = 0; i < allButtons.length; i++) {
+    allButtons[i].classList.remove("active");
   }
-});
 
-axiosArena.get("channels/agn-archive").then(response => {
-  if (response.data && response.data.contents.length > 0) {
-    createProjectList(response.data.contents);
-    projectList.removeChild(loading);
-  }
-});
-
-
+  displayContainer.innerHTML = "";
+  projectList.innerHTML = "";
+  allFilterButton.classList.add("active");
+  let showDataByOrgLabel = document.createElement("small");
+  showDataByOrgLabel.innerHTML = "Browse by organization:";
+  projectList.appendChild(showDataByOrgLabel);
+  axiosArena.get("channels/agn-archive").then(response => {
+    if (response.data && response.data.contents.length > 0) {
+      createProjectList(response.data.contents);
+    }
+  });
+}
 
 function createFilterList(data) {
-  let allFilterButton = document.createElement("button");
-  allFilterButton.innerHTML = "All";
-  allFilterButton.id = "all-filter-button";
-  allFilterButton.classList.add("filt");
-  allFilterButton.classList.add("active");
-  filterList.appendChild(allFilterButton);
-  allFilterButton.addEventListener("click", filterProjectsOnClick);
-
   data.map((fil) => {
     let filterName = document.createElement("button");
     let name = fil.title;
@@ -54,7 +62,7 @@ function createFilterList(data) {
     name = name.replace(/♺/, "");
     filterName.classList.add("filt");
     filterName.id = fil.slug;
-    filterName.addEventListener("click", filterProjectsOnClick.bind(fil));
+    filterName.addEventListener("click", filterProjectsOnClick.bind(filterName));
     filterName.innerHTML = name;
 
     filterList.appendChild(filterName);
@@ -62,16 +70,6 @@ function createFilterList(data) {
 }
 
 function createProjectList(data) {
-  let seeAllGraphics = document.createElement("p");
-  seeAllGraphics.style.marginBottom = "46px";
-  seeAllGraphics.innerHTML = "See All Graphics";
-  let showDataByOrgLabel = document.createElement("small");
-  showDataByOrgLabel.innerHTML = "Browse by organization:";
-
-  projectList.appendChild(seeAllGraphics);
-  projectList.appendChild(showDataByOrgLabel);
-  seeAllGraphics.addEventListener("click", reDisplayAllDataFromAllProjects);
-
   if (data) {
     data.map((proj) => {
       let projectName = document.createElement("p");
@@ -93,10 +91,8 @@ function createProjectList(data) {
   }
 }
 
-
 function showAllDataFromAllProjects(data, name, desc) {
   data.map((proj) => {
-    console.log(proj);
     if (proj.title) {
       let projectBlock = document.createElement("div");
 
@@ -109,7 +105,7 @@ function showAllDataFromAllProjects(data, name, desc) {
         video.className = "video";
         video.innerHTML = proj.embed.html;
         projectBlock.appendChild(video);
-        displayProjectRow.appendChild(projectBlock);
+        displayContainer.appendChild(projectBlock);
       } else if (proj.title && proj.image) {
         projectBlock.className = "project-block image-block";
         let image = document.createElement("img");
@@ -117,64 +113,37 @@ function showAllDataFromAllProjects(data, name, desc) {
         image.src = proj.image.original.url;
         image.alt = proj.title;
         projectBlock.appendChild(image);
-        displayProjectRow.appendChild(projectBlock);
+        displayContainer.appendChild(projectBlock);
       }
     }
   })
 
-
-  display.appendChild(displayProjectRow);
+  display.appendChild(displayContainer);
 }
 
-function reDisplayAllDataFromAllProjects() {
-  display.innerHTML = "";
-  displayProjectRow.innerHTML = "";
-  projectList.innerHTML = "";
-  axiosArena.get("channels/agn-archive").then(response => {
-    if (response.data && response.data.contents.length > 0) {
-      createProjectList(response.data.contents);
-      projectList.removeChild(loading);
-    }
-  });
-}
-
-
-function filterProjectsOnClick() {
+function filterProjectsOnClick(button, fil) {
   const allElements = document.getElementsByClassName("project-block");
   const allButtons = document.getElementsByClassName("filt");
-  if (this.innerHTML === "All") {
-    if (this.classList.contains('active')) {
-      this.classList.remove('active');
-    } else {
-      for (var i = 0; i < allButtons.length; i++) {
-        allButtons[i].classList.remove("active");
-      }
-      this.classList.add('active');
-    }
-    for (var i = 0; i < allElements.length; i++) {
-      allElements[i].style.display = "flex";
-    }
 
+  if (this.classList.contains('active')) {
+    this.classList.remove('active');
+    getArchive();
   } else {
-    const button = document.getElementById(this.slug);
-    const allFilterButton = document.getElementById("all-filter-button");
-    if (allFilterButton.classList.contains('active')) { allFilterButton.classList.remove('active') }
-    if (button.classList.contains('active')) {
-      button.classList.remove('active');
-    } else {
-      button.classList.add('active');
+    for (var i = 0; i < allButtons.length; i++) {
+      allButtons[i].classList.remove("active");
     }
-
-    for (var i = 0; i < allElements.length; i++) {
-      allElements[i].style.display = "none";
-    }
-
-    axiosArena.get(`channels/${this.slug}`).then(response => {
-      if (response.data && response.data.contents.length > 0) {
-        toggleFilteredItems(response.data.contents);
-      }
-    });
+    this.classList.add('active');
   }
+  console.log(this);
+  for (var i = 0; i < allElements.length; i++) {
+    allElements[i].style.display = "none";
+  }
+
+  axiosArena.get(`channels/${this.id}`).then(response => {
+    if (response.data && response.data.contents.length > 0) {
+      toggleFilteredItems(response.data.contents);
+    }
+  });
 }
 
 function toggleFilteredItems(data) {
@@ -191,7 +160,6 @@ function toggleFilteredItems(data) {
   })
 }
 
-
 function showProjectOnClick() {
   const button = document.getElementById(this.slug);
   let projectName = document.createElement("h2");
@@ -200,9 +168,9 @@ function showProjectOnClick() {
   allFilterButton.classList.contains("active") ? allFilterButton.classList.remove("active") : null;
   projectName.innerHTML = this.title;
   projectDesc.innerHTML = this.metadata.description;
-  displayProjectRow.innerHTML = "";
-  displayProjectRow.appendChild(projectName);
-  displayProjectRow.appendChild(projectDesc);
+  displayContainer.innerHTML = "";
+  displayContainer.appendChild(projectName);
+  displayContainer.appendChild(projectDesc);
 
   axiosArena.get(`channels/${this.slug}`).then(response => {
     if (response.data && response.data.contents.length > 0) {
@@ -225,7 +193,7 @@ function displayProject(data) {
         video.className = "video";
         video.innerHTML = proj.embed.html;
         projectBlock.appendChild(video);
-        displayProjectRow.appendChild(projectBlock);
+        displayContainer.appendChild(projectBlock);
       } else if (proj.title && proj.image) {
         projectBlock.className = "project-block image-block";
         let image = document.createElement("img");
@@ -233,13 +201,13 @@ function displayProject(data) {
         image.src = proj.image.original.url;
         image.alt = proj.title;
         projectBlock.appendChild(image);
-        displayProjectRow.appendChild(projectBlock);
+        displayContainer.appendChild(projectBlock);
       }
 
     }
   })
 
-  display.appendChild(displayProjectRow);
+  display.appendChild(displayContainer);
 }
 
 function slugify (str) {
@@ -256,3 +224,6 @@ function slugify (str) {
 
   return str;
 }
+
+getArchive();
+getFilters();

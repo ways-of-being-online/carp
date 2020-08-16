@@ -359,7 +359,7 @@ nav a {
   flex-direction: column;
   width: 100%;
   background: #1d1d1d;
-  padding: 40px;
+  padding: 18px;
   color: #E0C08D;
 }
 
@@ -382,12 +382,13 @@ nav a {
   display: block;
   width: 100%;
   color: antiquewhite;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
 }
 #project-list p {
   cursor: pointer;
   color: antiquewhite;
-  margin-bottom: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   font-weight: bold;
 }
 
@@ -398,12 +399,14 @@ nav a {
 @media only screen and (min-width: 767px) {
   .filters,
   #display {
-    height: calc(100vh - 103px);
+    padding: 20px;
+    height: calc(100vh - 86px);
     overflow: scroll;
   }
 }
 #filter-list h2 {
   display: block;
+  font-size: 1.8675em;
 }
 
 #filter-list button.filt {
@@ -412,6 +415,7 @@ nav a {
   margin: 4px;
   background: #1d1d1d;
   color: antiquewhite;
+  font-size: .675em;
   border: 2px solid antiquewhite;
   border-radius: 2px;
   height: 35px;
@@ -425,6 +429,7 @@ nav a {
   border: 2px solid #1d1d1d;
 }
 .archive-wrapper #display {
+  padding: 0;
   width: 100%;
 }
 .archive-wrapper .display {
@@ -434,7 +439,7 @@ nav a {
   align-content: flex-start;
   margin-bottom: 42px;
   width: 100%;
-  padding: 40px;
+  padding: 18px;
   align-items: flex-end;
 }
 .archive-wrapper .display h2,
@@ -446,7 +451,7 @@ nav a {
   justify-content: flex-end;
   flex-wrap: wrap;
   flex-direction: column-reverse;
-  width: 49%;
+  width: 100%;
   margin-bottom: 46px;
   font-size: .8675em;
   word-break: break-word;
@@ -470,8 +475,12 @@ nav a {
   width: 100%;
 }
 @media only screen and (min-width: 767px) {
-  .archive-wrapper .project-block {
+  .archive-wrapper .project-block.image-block {
     justify-content: flex-start;
+    width: 49%;
+  }
+  .archive-wrapper .display {
+    padding: 40px;
   }
 }
 
